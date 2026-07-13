@@ -1,0 +1,117 @@
+* 4x4 Two-Layer Backside PDN Model
+* Total cells: 16
+* Interface: 'Vout' (connect to buck converter output)
+
+*=========== Design Parameters ===========
+.param Iload=10.95 PnTSV=4u tile=400u
+.param Pb=57u alpha=3 Pp=150u
+.param hVia=10u Dvia=50u
+
+*=========== Per-Layer Resistance ===========
+.param Nbpr={tile/0.105u}
+.param Nseg={tile/PnTSV}
+.param Rbpr={50*PnTSV/12/(Nbpr*Nseg)}
+.param NnTSV={(tile/PnTSV)*(tile/(2*0.105u))}
+.param RnTSV={2/NnTSV}
+.param Lbsm1={2*PnTSV}
+.param RsegBSM1={80m*Lbsm1/0.5u}
+.param NsegBSM1={(tile/PnTSV)*(tile/(2*PnTSV))}
+.param Rbsm1={RsegBSM1/12/NsegBSM1}
+.param RtapOne={0.5*(2u/PnTSV)**2}
+.param Ntap={(tile/(2*PnTSV))**2}
+.param Rtap={RtapOne/Ntap}
+.param Nbump={(tile/Pb)**2}
+.param Rbsm3={40m/4/Nbump}
+.param Rbump={10m/Nbump}
+.param wBus={Pb*(alpha+1)/alpha}
+.param Nbus={tile/Pp}
+.param Rrdl3={2m*tile/wBus/3/Nbus}
+.param RviaOne={1.68e-8*hVia/(3.14159*(Dvia/2)**2)}
+.param Rvia={RviaOne/Nbump}
+.param Npillar={(tile/Pp)**2}
+.param Rrdl2={2m*0.25/Npillar}
+.param Rrdl1={2m*0.25/Npillar}
+.param RpillarOne={1.68e-8*120u/(3.14159*(75u/2)**2)}
+.param Rpillar={RpillarOne/Npillar}
+
+*=========== Mesh Aggregate (4x4) ===========
+.param Ncells=16
+.param Rlat=40m
+.param Rsup={(Rpillar+Rrdl1+2*Rvia+Rrdl2+Rrdl3+Rbump)*4}
+.param Rvia_cell={Rtap*Ncells}
+
+*=========== Upper Layer Horizontal Laterals ===========
+RH_1_1 n_1_1_h n_1_2_h {Rlat}
+RH_1_2 n_1_2_h n_1_3_h {Rlat}
+RH_1_3 n_1_3_h n_1_4_h {Rlat}
+RH_2_1 n_2_1_h n_2_2_h {Rlat}
+RH_2_2 n_2_2_h n_2_3_h {Rlat}
+RH_2_3 n_2_3_h n_2_4_h {Rlat}
+RH_3_1 n_3_1_h n_3_2_h {Rlat}
+RH_3_2 n_3_2_h n_3_3_h {Rlat}
+RH_3_3 n_3_3_h n_3_4_h {Rlat}
+RH_4_1 n_4_1_h n_4_2_h {Rlat}
+RH_4_2 n_4_2_h n_4_3_h {Rlat}
+RH_4_3 n_4_3_h n_4_4_h {Rlat}
+
+*=========== Lower Layer Vertical Laterals ===========
+RV_1_1 n_1_1 n_2_1 {Rlat}
+RV_1_2 n_1_2 n_2_2 {Rlat}
+RV_1_3 n_1_3 n_2_3 {Rlat}
+RV_1_4 n_1_4 n_2_4 {Rlat}
+RV_2_1 n_2_1 n_3_1 {Rlat}
+RV_2_2 n_2_2 n_3_2 {Rlat}
+RV_2_3 n_2_3 n_3_3 {Rlat}
+RV_2_4 n_2_4 n_3_4 {Rlat}
+RV_3_1 n_3_1 n_4_1 {Rlat}
+RV_3_2 n_3_2 n_4_2 {Rlat}
+RV_3_3 n_3_3 n_4_3 {Rlat}
+RV_3_4 n_3_4 n_4_4 {Rlat}
+
+*=========== Vias (Upper <-> Lower) ===========
+RVia_1_1 n_1_1_h n_1_1 {Rvia_cell}
+RVia_1_2 n_1_2_h n_1_2 {Rvia_cell}
+RVia_1_3 n_1_3_h n_1_3 {Rvia_cell}
+RVia_1_4 n_1_4_h n_1_4 {Rvia_cell}
+RVia_2_1 n_2_1_h n_2_1 {Rvia_cell}
+RVia_2_2 n_2_2_h n_2_2 {Rvia_cell}
+RVia_2_3 n_2_3_h n_2_3 {Rvia_cell}
+RVia_2_4 n_2_4_h n_2_4 {Rvia_cell}
+RVia_3_1 n_3_1_h n_3_1 {Rvia_cell}
+RVia_3_2 n_3_2_h n_3_2 {Rvia_cell}
+RVia_3_3 n_3_3_h n_3_3 {Rvia_cell}
+RVia_3_4 n_3_4_h n_3_4 {Rvia_cell}
+RVia_4_1 n_4_1_h n_4_1 {Rvia_cell}
+RVia_4_2 n_4_2_h n_4_2 {Rvia_cell}
+RVia_4_3 n_4_3_h n_4_3 {Rvia_cell}
+RVia_4_4 n_4_4_h n_4_4 {Rvia_cell}
+
+*=========== Current Source Loads ===========
+Ic_1_1 n_1_1 0 {Iload/Ncells}
+Ic_1_2 n_1_2 0 {Iload/Ncells}
+Ic_1_3 n_1_3 0 {Iload/Ncells}
+Ic_1_4 n_1_4 0 {Iload/Ncells}
+Ic_2_1 n_2_1 0 {Iload/Ncells}
+Ic_2_2 n_2_2 0 {Iload/Ncells}
+Ic_2_3 n_2_3 0 {Iload/Ncells}
+Ic_2_4 n_2_4 0 {Iload/Ncells}
+Ic_3_1 n_3_1 0 {Iload/Ncells}
+Ic_3_2 n_3_2 0 {Iload/Ncells}
+Ic_3_3 n_3_3 0 {Iload/Ncells}
+Ic_3_4 n_3_4 0 {Iload/Ncells}
+Ic_4_1 n_4_1 0 {Iload/Ncells}
+Ic_4_2 n_4_2 0 {Iload/Ncells}
+Ic_4_3 n_4_3 0 {Iload/Ncells}
+Ic_4_4 n_4_4 0 {Iload/Ncells}
+
+*=========== Supply Stacks (4 corners) ===========
+RSup_1 Vout n_1_1_h {Rsup}
+RSup_2 Vout n_1_4_h {Rsup}
+RSup_3 Vout n_4_1_h {Rsup}
+RSup_4 Vout n_4_4_h {Rsup}
+
+*=========== Standalone Analysis ===========
+Vsupply Vout 0 0.6
+.op
+.end
+

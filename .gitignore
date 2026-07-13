@@ -1,0 +1,12 @@
+# LTspice / ngspice simulation binary outputs (regenerable, large)
+*.raw
+
+# ...but keep one small mesh output as a worked example
+!pdn_mesh_10x10.raw
+
+# Python
+__pycache__/
+*.pyc
+
+# Local Claude Code settings (personal)
+.claude/settings.local.json
