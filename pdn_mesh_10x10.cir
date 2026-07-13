@@ -1,9 +1,11 @@
 * 10x10 Two-Layer Backside PDN Model
-* Total cells: 100
-* Interface: 'Vout' (connect to buck converter output)
+* Total cells: 100   Total pads: 4
+* Pad locations (first 8): (1,1), (1,10), (10,1), (10,10)
+* Interface: 'Vout' (driven by Vsupply at 0.6 V)
 
 *=========== Design Parameters ===========
-.param Iload=1 PnTSV=4u tile=400u
+.param Iload=5.809 PnTSV=4u tile=400u
+.param Vout_dc=0.6
 .param Pb=57u alpha=3 Pp=150u
 .param hVia=10u Dvia=50u
 
@@ -34,7 +36,7 @@
 .param RpillarOne={1.68e-8*120u/(3.14159*(75u/2)**2)}
 .param Rpillar={RpillarOne/Npillar}
 
-*=========== Mesh Aggregate (10x10) ===========
+*=========== Mesh Aggregate (10x10, 4 pads) ===========
 .param Ncells=100
 .param Rlat=40m
 .param Rsup={(Rpillar+Rrdl1+2*Rvia+Rrdl2+Rrdl3+Rbump)*4}
@@ -428,15 +430,14 @@ Ic_10_8 n_10_8 0 {Iload/Ncells}
 Ic_10_9 n_10_9 0 {Iload/Ncells}
 Ic_10_10 n_10_10 0 {Iload/Ncells}
 
-*=========== Supply Stacks (4 corners) ===========
+*=========== Supply Stacks (4 pads) ===========
 RSup_1 Vout n_1_1_h {Rsup}
 RSup_2 Vout n_1_10_h {Rsup}
 RSup_3 Vout n_10_1_h {Rsup}
 RSup_4 Vout n_10_10_h {Rsup}
 
-
-
-
-
-
+*=========== Voltage Excitation + Analysis ===========
+Vsupply Vout 0 {Vout_dc}
+.op
+.end
 
